@@ -415,7 +415,7 @@ class SafeTx:
         :return: Signature
         """
         account = Account.from_key(private_key)
-        signature_dict = account.signHash(self.safe_tx_hash)
+        signature_dict = account.unsafe_sign_hash(self.safe_tx_hash)
         signature = signature_to_bytes(
             signature_dict["v"], signature_dict["r"], signature_dict["s"]
         )
