@@ -25,21 +25,33 @@ class ApiSafeTxHashNotMatchingException(SafeAPIException):
 
 class TransactionServiceApi(SafeBaseAPI):
     URL_BY_NETWORK = {
-        EthereumNetwork.ARBITRUM_ONE: "https://safe-transaction-arbitrum.safe.global",
-        EthereumNetwork.AURORA_MAINNET: "https://safe-transaction-aurora.safe.global",
-        EthereumNetwork.AVALANCHE_C_CHAIN: "https://safe-transaction-avalanche.safe.global",
+        EthereumNetwork.ARBITRUM_ONE: "https://api.safe.global/tx-service/arb1",
+        EthereumNetwork.AURORA_MAINNET: "https://api.safe.global/tx-service/aurora",
+        EthereumNetwork.AVALANCHE_C_CHAIN: "https://api.safe.global/tx-service/avax",
         EthereumNetwork.BASE_GOERLI_TESTNET: "https://safe-transaction-base-testnet.safe.global",
-        EthereumNetwork.BASE: "https://safe-transaction-base.safe.global",
-        EthereumNetwork.BNB_SMART_CHAIN_MAINNET: "https://safe-transaction-bsc.safe.global",
-        EthereumNetwork.CELO_MAINNET: "https://safe-transaction-celo.safe.global",
-        EthereumNetwork.GNOSIS: "https://safe-transaction-gnosis-chain.safe.global",
+        EthereumNetwork.BASE: "https://api.safe.global/tx-service/base",
+        EthereumNetwork.BASE_SEPOLIA_TESTNET: "https://api.safe.global/tx-service/basesep",
+        EthereumNetwork.BLAST: "https://api.safe.global/tx-service/blastmainnet",
+        EthereumNetwork.BNB_SMART_CHAIN_MAINNET: "https://api.safe.global/tx-service/bnb",
+        EthereumNetwork.CELO_MAINNET: "https://api.safe.global/tx-service/celo",
+        EthereumNetwork.GNOSIS: "https://api.safe.global/tx-service/gno",
+        EthereumNetwork.GNOSIS_CHIADO_TESTNET: "https://api.safe.global/tx-service/chi",
         EthereumNetwork.GOERLI: "https://safe-transaction-goerli.safe.global",
-        EthereumNetwork.MAINNET: "https://safe-transaction-mainnet.safe.global",
-        EthereumNetwork.OPTIMISM: "https://safe-transaction-optimism.safe.global",
-        EthereumNetwork.POLYGON: "https://safe-transaction-polygon.safe.global",
-        EthereumNetwork.POLYGON_ZKEVM: "https://safe-transaction-zkevm.safe.global",
-        EthereumNetwork.SEPOLIA: "https://safe-transaction-sepolia.safe.global",
-        EthereumNetwork.ZKSYNC_MAINNET: "https://safe-transaction-zksync.safe.global",
+        EthereumNetwork.HEMI_NETWORK: "https://api.safe.global/tx-service/hemi",
+        EthereumNetwork.INK: "https://api.safe.global/tx-service/ink",
+        EthereumNetwork.LINEA: "https://api.safe.global/tx-service/linea",
+        EthereumNetwork.MAINNET: "https://api.safe.global/tx-service/eth",
+        EthereumNetwork.MANTLE: "https://api.safe.global/tx-service/mantle",
+        EthereumNetwork.OPTIMISM: "https://api.safe.global/tx-service/oeth",
+        EthereumNetwork.POLYGON: "https://api.safe.global/tx-service/pol",
+        EthereumNetwork.POLYGON_ZKEVM: "https://api.safe.global/tx-service/zkevm",
+        EthereumNetwork.SCROLL: "https://api.safe.global/tx-service/scr",
+        EthereumNetwork.SEPOLIA: "https://api.safe.global/tx-service/sep",
+        EthereumNetwork.SONIC_MAINNET: "https://api.safe.global/tx-service/sonic",
+        EthereumNetwork.UNICHAIN: "https://api.safe.global/tx-service/unichain",
+        EthereumNetwork.WORLD_CHAIN: "https://api.safe.global/tx-service/wc",
+        EthereumNetwork.X_LAYER_MAINNET: "https://api.safe.global/tx-service/okb",
+        EthereumNetwork.ZKSYNC_MAINNET: "https://api.safe.global/tx-service/zksync",
     }
 
     def __init__(
@@ -178,7 +190,7 @@ class TransactionServiceApi(SafeBaseAPI):
         """
         safe_tx_hash_str = HexBytes(safe_tx_hash).hex()
         response = self._get_request(
-            f"/api/v1/multisig-transactions/{safe_tx_hash_str}/"
+            f"/api/v2/multisig-transactions/{safe_tx_hash_str}/"
         )
         if not response.ok:
             raise SafeAPIException(
@@ -203,7 +215,7 @@ class TransactionServiceApi(SafeBaseAPI):
         :param safe_address:
         :return: a list of transactions for provided Safe
         """
-        url = f"/api/v1/safes/{safe_address}/multisig-transactions/"
+        url = f"/api/v2/safes/{safe_address}/multisig-transactions/"
 
         if kwargs:
             query_string = urlencode(
@@ -341,7 +353,7 @@ class TransactionServiceApi(SafeBaseAPI):
             "origin": "Safe-CLI",
         }
         response = self._post_request(
-            f"/api/v1/safes/{safe_tx.safe_address}/multisig-transactions/", data
+            f"/api/v2/safes/{safe_tx.safe_address}/multisig-transactions/", data
         )
         if not response.ok:
             raise SafeAPIException(f"Error posting transaction: {response.content!r}")
@@ -356,7 +368,7 @@ class TransactionServiceApi(SafeBaseAPI):
         """
         payload = {"safeTxHash": safe_tx_hash, "signature": signature}
         response = self._delete_request(
-            f"/api/v1/multisig-transactions/{safe_tx_hash}/", payload
+            f"/api/v2/multisig-transactions/{safe_tx_hash}/", payload
         )
         if not response.ok:
             raise SafeAPIException(f"Error deleting transaction: {response.content!r}")

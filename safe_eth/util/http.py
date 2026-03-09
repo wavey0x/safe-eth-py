@@ -1,4 +1,5 @@
 from typing import Union
+from urllib.parse import urljoin
 
 import requests
 
@@ -32,3 +33,16 @@ def prepare_http_session(
     session.mount("http://", adapter)
     session.mount("https://", adapter)
     return session
+
+
+def build_full_url(base_url: str, url: str) -> str:
+    """
+    Join URLs without discarding path components already present in ``base_url``.
+    """
+    if not base_url.startswith(("http://", "https://")):
+        base_url = f"http://{base_url}/"
+
+    base_url = base_url.rstrip("/")
+    url = url.lstrip("/")
+
+    return urljoin(f"{base_url}/", url)

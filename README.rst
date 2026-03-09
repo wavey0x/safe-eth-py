@@ -1,6 +1,11 @@
 Safe-eth-py (previously known as Gnosis-py)
 ###########################################
 
+.. warning::
+
+   This fork is maintained for backward compatibility with `eth-brownie`.
+   Keep the project on the pre-`web3.py` v7 line unless Brownie compatibility is being revisited intentionally.
+
 .. class:: no-web no-pdf
 
 |ci| |coveralls| |python| |django| |pipy| |readthedocs| |black|
